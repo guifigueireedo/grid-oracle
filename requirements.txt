@@ -19,3 +19,8 @@ streamlit
 # utils
 ipykernel
 nbformat
+
+# fast f1
+fastf1
+requests-cache
+matplotlib

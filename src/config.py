@@ -20,7 +20,7 @@ DNF_MODEL_FILENAME = "dnf_model.joblib"
 MODEL_METADATA_FILENAME = "model_metadata.json"
 
 #=== CONSTANTES PROJETO ===
-ERGAST_API_URL = "http://ergast.com/api/f1"
+FASTF1_CACHE_PATH = os.path.join(os.path.dirname(__file__), '..', 'f1_cache')
 HTTP_USER_AGENT = "GridOracle/1.0 (https://github.com/guifigueireedo/grid-oracle)"
 
 #=== CONSTANTES COLETA ===
