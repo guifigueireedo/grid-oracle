@@ -35,7 +35,7 @@ O mais importante é que este projeto é um **ciclo de MLOps vivo**:
 * **Python**
 * **ML/Data:** Pandas, Scikit-learn, XGBoost, SHAP
 * **Frontend:** Streamlit
-* **APIs:** Ergast (Dados F1), OpenWeatherMap (Clima), Google Gemini (IA Generativa)
+* **APIs:** Ergast (Dados F1), OpenWeatherMap (Clima), Groq Llama (IA Generativa)
 * **MLOps:** GitHub Actions, Hugging Face Hub (para versionamento de modelos e datasets)
 
 ## 🚀 Como Rodar Localmente
@@ -49,7 +49,7 @@ O mais importante é que este projeto é um **ciclo de MLOps vivo**:
 2.  **Crie um ambiente virtual e instale as dependências:**
     ```bash
     python -m venv venv
-    source venv/bin/activate  # (ou .venv\Scripts\activate no Windows)
+    source venv/bin/activate  #(ou .venv\Scripts\activate no Windows)
     pip install -r requirements.txt
     ```
 
