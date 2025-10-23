@@ -35,3 +35,7 @@ secrets.toml
 
 # tests
 .pytest_cache/
+
+# cache fastf1 data
+f1_cache/
+f1_http_cache.sqlite
