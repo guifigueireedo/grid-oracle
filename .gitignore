@@ -1,0 +1,37 @@
+# py
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# venv
+venv/
+env/
+.venv/
+.env
+
+# ide
+.vscode/
+
+# os archives
+.DS_Store
+Thumbs.db
+
+# notebooks
+.ipynb_checkpoints/
+
+# data & models
+data/
+models/
+*.csv
+*.parquet
+*.pkl
+*.joblib
+*.json
+
+# st
+.streamlit/
+secrets.toml
+
+# tests
+.pytest_cache/
