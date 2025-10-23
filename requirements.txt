@@ -1,0 +1,21 @@
+# core data ML
+pandas
+numpy
+scikit-learn
+xgboost
+shap
+
+# api data collect
+requests
+python-dotenv
+huggingface_hub
+
+# ai
+groq
+
+# webapp
+streamlit
+
+# utils
+ipykernel
+nbformat
