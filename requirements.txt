@@ -1,0 +1,5 @@
+fastf1 #biblioteca principal de dados da f1
+pandas #manipulação de dados
+pyarrow #ler arquivos parquet
+groq #interação com o groq ai
+python-dotenv #carregar .env

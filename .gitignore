@@ -1,0 +1,20 @@
+#secrets
+.env
+
+#caches gerados
+/f1_cache/
+f1_historical_data_5y.parquet
+final_prediction.json
+
+#caches python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+#ambientes virtuais
+venv/
+.venv/
+env/
+.env/
+.env.*
