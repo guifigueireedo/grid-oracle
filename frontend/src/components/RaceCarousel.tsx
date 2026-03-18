@@ -39,7 +39,6 @@ export default function RaceCarousel() {
 
   return (
     <div className="w-full relative flex flex-col">
-      {/* The Controller (Moved to Top Right) */}
       <div className="flex items-center justify-end gap-3 mb-4 px-6 w-full">
         <button 
           onClick={() => scroll("left")} 
@@ -55,7 +54,6 @@ export default function RaceCarousel() {
         </button>
       </div>
 
-      {/* The Carousel */}
       <div 
         ref={targetRef} 
         className="w-full overflow-x-auto flex gap-6 px-6 pb-8 snap-x snap-mandatory"

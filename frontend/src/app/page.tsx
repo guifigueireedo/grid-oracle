@@ -1,11 +1,15 @@
 "use client";
 
-import RaceCarousel from "@/components/RaceCarousel";
-import { Activity, Database, Cpu, User, Zap, Code2, LineChart, Instagram, Github, Linkedin, Globe } from "lucide-react";
+import dynamic from "next/dynamic";
+const RaceCarousel = dynamic(() => import("@/components/RaceCarousel"), { 
+  ssr: false, 
+});
+
+import { Activity, Database, Cpu, User, Zap, Code2, LineChart} from "lucide-react";
 import { motion, Variants } from "framer-motion";
+import Image from "next/image";
 
 export default function Home() {
-  // Animation variants for smooth scrolling reveals
   const fadeUp: Variants = {
     hidden: { opacity: 0, y: 40 },
     visible: { opacity: 1, y: 0, transition: { duration: 0.8, ease: "easeOut" } }
@@ -13,10 +17,8 @@ export default function Home() {
 
   return (
     <main className="min-h-screen bg-oracle-black flex flex-col pt-12 relative overflow-x-hidden">
-      {/* Background ambient glow */}
       <div className="absolute top-0 left-[20%] w-[60%] h-[40%] bg-oracle-red blur-[150px] opacity-10 rounded-full pointer-events-none" />
       
-      {/* Header */}
       <header className="container mx-auto px-6 mb-8 relative z-10 flex items-center justify-between">
         <div>
           <h1 className="text-3xl md:text-3xl md:text-4xl font-bold tracking-tighter text-white flex items-center gap-3">
@@ -31,15 +33,12 @@ export default function Home() {
         </div>
       </header>
 
-      {/* The Carousel */}
       <div className="w-full relative z-10 mb-32">
         <RaceCarousel />
       </div>
 
-      {/* Narrative Sections */}
       <section className="container mx-auto px-6 pb-32 relative z-10 flex flex-col gap-32">
         
-        {/* SECTION 1: THE ORIGIN */}
         <motion.div 
           initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-100px" }} variants={fadeUp}
           className="flex flex-col md:flex-row items-center gap-12"
@@ -71,7 +70,6 @@ export default function Home() {
           </div>
         </motion.div>
 
-        {/* SECTION 2: THE TECH */}
         <motion.div 
           initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-100px" }} variants={fadeUp}
           className="flex flex-col md:flex-row-reverse items-center gap-12"
@@ -117,14 +115,12 @@ export default function Home() {
           </div>
         </motion.div>
 
-        {/* SECTION 3: THE DEVELOPER */}
         <motion.div 
           initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-100px" }} variants={fadeUp}
           className="flex flex-col-reverse md:flex-row items-center gap-10 md:gap-12 bg-oracle-dark/30 border border-white/5 p-6 md:p-12 rounded-3xl relative overflow-hidden"
         >
           <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-oracle-red to-transparent opacity-50" />
           
-          {/* Text Content - Centered on mobile, left-aligned on desktop */}
           <div className="flex-1 space-y-6 z-10 flex flex-col items-center md:items-start text-center md:text-left">
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/5 border border-white/10 text-xs text-gray-400 font-mono tracking-widest uppercase">
               <User size={14} className="text-oracle-red" /> The Dev
@@ -139,7 +135,6 @@ export default function Home() {
               <strong className="text-white">What's next for the Oracle?</strong> I'm working on a feedback loop between AI's, just like Real Steel, I wanna see them robots fighting themselves!! Basically, i want to improve the AI using another AI, wich tells where it failed, how many and by how much the AI got the predictions right. 
             </p>
             
-            {/* Buttons - Stacked on mobile, side-by-side on larger screens */}
             <div className="pt-4 flex flex-col sm:flex-row items-center justify-center md:justify-start gap-4 w-full">
               <a href="https://instagram.com/arthur.script" target="_blank" rel="noopener noreferrer" className="flex items-center justify-center gap-2 px-5 py-3 bg-white/5 hover:bg-white/10 border border-white/10 rounded-xl text-white font-medium transition-all group w-full sm:w-auto">
                 <span className="text-gray-400 group-hover:text-oracle-red transition-colors font-bold">@arthur.script</span>
@@ -156,10 +151,9 @@ export default function Home() {
             </div>
           </div>
           
-          {/* Image Container - Added shrink-0 to prevent oval squishing and margin to separate from text */}
           <div className="w-full md:w-1/3 flex justify-center z-10 mb-2 md:mb-0">
             <div className="w-48 h-48 md:w-64 md:h-64 shrink-0 rounded-full border-4 border-oracle-red/20 shadow-red-glow-intense flex items-center justify-center bg-oracle-dark relative overflow-hidden">
-               <img src="/me.jpeg" alt="Arthur - Percorsi Co." className="w-full h-full object-cover" />
+               <Image src="/me.jpeg" alt="Arthur - Percorsi Co." fill className="object-cover" sizes="(max-width: 768px) 192px, 256px" priority/>
             </div>
           </div>
         </motion.div>

@@ -2,8 +2,8 @@
 
 import { ChevronRight, Trophy, AlertTriangle, Cpu, MapPin, Clock } from "lucide-react";
 import { useState, useEffect } from "react";
+import Image from "next/image";
 
-// --- TEAM COLORS DICTIONARY ---
 const driverColors: Record<string, string> = {
   "LANDO NORRIS": "#F47600",
   "MAX VERSTAPPEN": "#4781D7",
@@ -73,24 +73,22 @@ export default function RaceCard({ race }: { race: RaceEvent }) {
 
   return (
     <div 
-      // MOBILE FIX: Uses 85vw on mobile so it always fits nicely with margins, then jumps to fixed pixels on desktop.
       className={`transition-all duration-500 ease-in-out bg-oracle-dark border rounded-xl p-6 relative flex flex-col md:flex-row gap-6 overflow-hidden group snap-start
         ${isOpen ? "w-[85vw] max-w-[380px] md:max-w-none md:w-[1100px]" : "w-[85vw] max-w-[380px] md:max-w-none md:w-[400px]"}
         ${isNext ? "border-oracle-red shadow-red-glow" : "border-white/5"}
         ${isCancelled ? "opacity-50 grayscale" : ""}
       `}
     >
-      {/* LEFT PANE */}
       <div className="w-full md:w-[352px] shrink-0 flex flex-col min-h-[450px] relative z-10">
         {race.circuit_image && (
           <div className="absolute top-10 -right-10 w-48 opacity-10 pointer-events-none transition-transform duration-500 group-hover:scale-110">
-            <img src={race.circuit_image} alt="Circuit" className="w-full h-full object-contain filter invert" />
+            <Image src={race.circuit_image} alt="Circuit" fill className="object-contain filter invert" sizes="(max-width: 768px) 100vw, 200px"/>
           </div>
         )}
 
         <div className="flex justify-between items-start mb-4">
           <div className="flex items-center gap-3">
-            {race.country_flag && <img src={race.country_flag} alt="Flag" className="w-8 rounded-sm shadow-md" />}
+            {race.country_flag && <Image src={race.country_flag} alt="Flag" width={32} height={20} className="rounded-sm shadow-md"/>}
             <span className="text-gray-400 text-sm font-mono">{race.date}</span>
           </div>
           {isNext && <span className="bg-oracle-red text-white text-[10px] font-bold px-2 py-1 rounded-full animate-pulse flex items-center gap-1 shadow-red-glow"><Cpu size={12} /> PREDICTION</span>}
@@ -109,9 +107,7 @@ export default function RaceCard({ race }: { race: RaceEvent }) {
         )}
       </div>
 
-      {/* RIGHT PANE: Expanding Grid */}
       <div className={`flex-1 transition-opacity duration-500 delay-150 border-t md:border-t-0 md:border-l border-white/10 pt-6 md:pt-0 md:pl-6 ${isOpen ? "opacity-100" : "opacity-0 hidden"}`}>
-        {/* MOBILE FIX: max-h-[400px] overflow-y-auto traps the scroll inside the card on cellphones! */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 h-full max-h-[400px] md:max-h-none overflow-y-auto md:overflow-visible pr-2 md:pr-0 custom-scrollbar">
           <div className="flex flex-col gap-3">{col1.map((d, i) => <DriverRow key={`col1-${i}`} driver={d} isNext={isNext} />)}</div>
           <div className="flex flex-col gap-3">{col2.map((d, i) => <DriverRow key={`col2-${i}`} driver={d} isNext={isNext} />)}</div>
@@ -122,7 +118,6 @@ export default function RaceCard({ race }: { race: RaceEvent }) {
   );
 }
 
-// Sub-component rendering
 function DriverRow({ driver, isNext }: { driver: DriverResult, isNext: boolean }) {
   const posColor = driver.position === 1 ? "text-yellow-400" :
                    driver.position === 2 ? "text-gray-300" :
