@@ -1,0 +1,42 @@
+name: Update Grid Oracle Telemetry
+
+on:
+  schedule:
+    # This cron schedule means: Run at 12:00 UTC every Monday
+    - cron: '0 12 * * 1'
+  workflow_dispatch: # This adds a manual "Run Workflow" button in GitHub so you can test it anytime
+
+jobs:
+  update-data:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install Dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install requests groq python-dotenv
+
+      - name: Run Telemetry Script
+        env:
+          # This pulls the secret you just added in Step 1
+          GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
+        run: |
+          # Navigate to where your script is and run it
+          cd backend/scripts
+          python update_frontend.py
+
+      - name: Commit and Push New Data
+        run: |
+          git config --global user.name 'github-actions[bot]'
+          git config --global user.email 'github-actions[bot]@users.noreply.github.com'
+          git add ../../frontend/src/data/calendar.json
+          git commit -m "🤖 TELEMETRY UPDATE: Processed latest F1 data and AI predictions" || echo "No new data to commit"
+          git push
