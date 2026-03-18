@@ -93,14 +93,11 @@ def generate_race_prediction(): #defines the main function to generate the race 
     
     script_dir = os.path.dirname(os.path.abspath(__file__))
     
-    # 2. Volta um nível para chegar na pasta pai (backend/)
     backend_dir = os.path.dirname(script_dir)
     
-    # 3. Constrói os caminhos corretos entrando na pasta 'data' e depois nas subpastas
     past_data_path = os.path.join(backend_dir, "data", "historical_resumes")
     current_data_path = os.path.join(backend_dir, "data", "current_data")
     
-    # 4. Carrega os dados usando os caminhos absolutos novos
     past_data = load_text_folder(past_data_path) 
     current_data = distill_current_data(current_data_path)
 
@@ -110,29 +107,28 @@ def generate_race_prediction(): #defines the main function to generate the race 
         
     print("debug: building engineered prompts...") #debug message to indicate that the prompts are being built
     
-    system_prompt = ( #defines the system prompt (the instructions for the ai to follow when making the prediction)
+    system_prompt = (
         f"""
-        You are an elite Formula 1 race strategist. Your task is to simulate a highly realistic, data-driven race outcome for the upcoming {next_race}.
+        You are an elite Formula 1 race strategist and data analyst. Your task is to simulate a highly realistic, data-driven race outcome for the upcoming {next_race}.
 
-        CRITICAL INSTRUCTIONS:
-        1. CURRENT ACTIVE GRID ONLY: You MUST ONLY use the drivers explicitly listed in the provided 2026 'current_data_2026'. DO NOT invent drivers or include anyone from past seasons (e.g., Logan Sargeant, Daniel Ricciardo) unless their data appears in the 2026 sessions. The standard grid has exactly 20 drivers.
-        2. PRIORITIZE 2026 RECENT FORM: Base your simulation heavily on the 2026 testing and recent race results provided. Do not overrate rookies or underrate veterans unless the 2026 sector times, gaps, or race results explicitly justify it. Historical data is secondary context.
-        3. DATA-GROUNDED REASONING: Your short performance notes MUST explicitly cite a specific trend or result from the provided data (e.g., "Building on their strong P4 in Australia...", "Struggled to match the pace seen in Bahrain tests..."). No generic "struggled with pace" excuses.
-        4. DNF FORMATTING: A realistic race has variability. You must include realistic DNFs. Do NOT assign a finishing position (P-number) to a driver who DNFs. They must be placed at the very end of the list.
+        INSTRUCTIONS:
+        1. CURRENT ACTIVE GRID ONLY: Use ONLY the exact 22 drivers listed in the provided 'current_data_2026'. Don't create drivers, the sum of the grid must be exactly 22.
+        2. RECENT FORM OVER REPUTATION: You MUST heavily weight the 2026 data. If a top driver has multiple DNFs or bad performances, they will have a lower prediction. If a low/midfield driver is consistently finishing in the top 10, they will have a better prediction. Consider realistic variation on past data and on reputation.
+        3. RELATIVE SUCCESS & POINTS ZONE: Points are only awarded from P1 to P10. You must evaluate performance relative to the team's tier. P7 is a disaster for a Top 5 team, but a massive success for teams like Williams or Cadillac. Reflect this context in your analysis.
+        4. REALISTIC DNF: A normal F1 race has 1 to 3 DNFs. Extreme anomalies (+6 DNFs) are exceptionally rare. Don't just assign DNFs based on the numbers of DNF's of last race. 
+        5. DATA-GROUNDED REASONING: Your explanations MUST have a justified and different explanation for each driver. Generic phrases like "struggled with pace" and "consistent points" are banned. The final explanation must have 200 characters min.
+        6. DNF FORMATTING: Do NOT assign a finishing position (P-number) to a driver who DNFs. Place all DNFs at the bottom of the classification.
 
         OUTPUT FORMAT:
-        First, write a brief [PRE-RACE ANALYSIS] paragraph detailing the current form of the grid based strictly on the 2026 data.
-        Then, output the final classification exactly following this structure:
 
-        [PRE-RACE ANALYSIS]
-        (Your data-driven analysis here)
-
-        [CLASSIFICATION]
-        P1 - Driver Name (Number) - Justification citing specific 2026 data.
-        P2 - Driver Name (Number) - Justification citing specific 2026 data.
+        [RESULTS]
+        P1 - Driver (Number) - Explanation.
+        P2 - Driver (Number) - Explanation.
         ...
-        DNF - Driver Name (Number) - Reason (e.g., Mechanical failure, crash on lap X).
-        DNF - Driver Name (Number) - Reason.
+        P10 - Driver (Number) - Explanation (Inside the points).
+        P11 - Driver (Number) - Explanation (Outside the points).
+        ...
+        DNF - Driver (Number) - Reason (e.g., Engine failure, Lap 1 collision).
         """
     )
     
@@ -150,8 +146,8 @@ def generate_race_prediction(): #defines the main function to generate the race 
                 {"role": "system", "content": system_prompt}, 
                 {"role": "user", "content": user_prompt} 
             ], 
-            temperature=0.5, #sets the creativity of the response, lower means more deterministic
-            max_tokens=1500 #sets the maximum number of tokens in the response
+            temperature=0.6, #sets the creativity of the response, lower means more deterministic
+            max_tokens=2500 #sets the maximum number of tokens in the response
         ) 
         
         prediction = response.choices[0].message.content #extracts the content of the ai response

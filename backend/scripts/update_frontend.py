@@ -40,11 +40,11 @@ def fetch_and_build_calendar():
         race_time = datetime.fromisoformat(date_str.replace("Z", "+00:00")) if date_str else now
 
         event = {
-            "id": f"mk_{meeting_key}", # FIX: Unique ID based on F1's official meeting key
+            "id": f"mk_{meeting_key}",
             "name": meeting_name,
             "location": r.get("location", country),
             "date": race_time.strftime("%b %d, %Y"),
-            "date_start_utc": date_str, # Passed to frontend for timezone calculation
+            "date_start_utc": date_str,
             "circuit_image": meeting.get("circuit_image", ""),
             "country_flag": meeting.get("country_flag", "")
         }
