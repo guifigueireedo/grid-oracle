@@ -1,8 +1,11 @@
 "use client";
 
 import dynamic from "next/dynamic";
+import CarouselSkeleton from "@/components/CarouselSkeleton";
+
 const RaceCarousel = dynamic(() => import("@/components/RaceCarousel"), { 
-  ssr: false, 
+  ssr: false,
+  loading: () => <CarouselSkeleton />,
 });
 
 import { Activity, Database, Cpu, User, Zap, Code2, LineChart} from "lucide-react";
@@ -126,7 +129,7 @@ export default function Home() {
               <User size={14} className="text-oracle-red" /> The Dev
             </div>
             <h2 className="text-3xl md:text-4xl font-bold text-white tracking-tight leading-tight">
-              Arthur Figueiredo<span className="text-gray-500 text-xl md:text-2xl font-normal block mt-1">Systems Analysis & Dev</span>
+              Arthur Figueiredo<span className="text-gray-500 text-xl md:text-2xl font-normal block mt-1">Systems Analysis & Dev | Student</span>
             </h2>
             <p className="text-gray-400 leading-relaxed text-base md:text-lg">
               I'm the guy who builds stuff like this instead of doing normal things on weekends. As the founder of <span className="text-white font-bold">Percorsi Co.</span>, I'm constantly looking for ways to mash up raw logic with great design.

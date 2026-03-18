@@ -67,24 +67,31 @@ export default function RaceCard({ race }: { race: RaceEvent }) {
   const isCancelled = race.status === "cancelled";
 
   const displayData = isNext ? race.predictions : race.results;
-  const col1 = displayData?.slice(0, 8) || [];
-  const col2 = displayData?.slice(8, 16) || [];
-  const col3 = displayData?.slice(16) || [];
+  const col1 = displayData?.slice(0, 6) || [];
+  const col2 = displayData?.slice(6, 12) || [];
+  const col3 = displayData?.slice(12, 18) || [];
+  const col4 = displayData?.slice(18) || [];
 
   return (
     <div 
       className={`transition-all duration-500 ease-in-out bg-oracle-dark border rounded-xl p-6 relative flex flex-col md:flex-row gap-6 overflow-hidden group snap-start
-        ${isOpen ? "w-[85vw] max-w-[380px] md:max-w-none md:w-[1100px]" : "w-[85vw] max-w-[380px] md:max-w-none md:w-[400px]"}
+        ${isOpen ? "w-[85vw] max-w-[380px] md:max-w-none md:w-[1400px]" : "w-[85vw] max-w-[380px] md:max-w-none md:w-[400px]"}
         ${isNext ? "border-oracle-red shadow-red-glow" : "border-white/5"}
         ${isCancelled ? "opacity-50 grayscale" : ""}
       `}
     >
       <div className="w-full md:w-[352px] shrink-0 flex flex-col min-h-[450px] relative z-10">
-        {race.circuit_image && (
-          <div className="absolute top-10 -right-10 w-48 opacity-10 pointer-events-none transition-transform duration-500 group-hover:scale-110">
-            <Image src={race.circuit_image} alt="Circuit" fill className="object-contain filter invert" sizes="(max-width: 768px) 100vw, 200px"/>
-          </div>
-        )}
+        {(() => {
+          const circuitImg = race.name.includes("Spanish") || race.location.includes("Barcelona") 
+            ? "https://media.formula1.com/content/dam/fom-website/2018-redesign-assets/Track%20icons%204x3/Spain%20carbon.png" 
+            : race.circuit_image;
+
+          return circuitImg ? (
+            <div className="absolute top-10 -right-10 w-48 h-48 opacity-10 pointer-events-none transition-transform duration-500 group-hover:scale-110">
+              <Image src={circuitImg} alt="Circuit Layout" fill className="object-contain filter invert" sizes="(max-width: 768px) 100vw, 200px" />
+            </div>
+          ) : null;
+        })()}
 
         <div className="flex justify-between items-start mb-4">
           <div className="flex items-center gap-3">
@@ -108,10 +115,11 @@ export default function RaceCard({ race }: { race: RaceEvent }) {
       </div>
 
       <div className={`flex-1 transition-opacity duration-500 delay-150 border-t md:border-t-0 md:border-l border-white/10 pt-6 md:pt-0 md:pl-6 ${isOpen ? "opacity-100" : "opacity-0 hidden"}`}>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 h-full max-h-[400px] md:max-h-none overflow-y-auto md:overflow-visible pr-2 md:pr-0 custom-scrollbar">
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-6 h-full max-h-[400px] md:max-h-none overflow-y-auto md:overflow-visible pr-2 md:pr-0 custom-scrollbar">
           <div className="flex flex-col gap-3">{col1.map((d, i) => <DriverRow key={`col1-${i}`} driver={d} isNext={isNext} />)}</div>
           <div className="flex flex-col gap-3">{col2.map((d, i) => <DriverRow key={`col2-${i}`} driver={d} isNext={isNext} />)}</div>
           <div className="flex flex-col gap-3">{col3.map((d, i) => <DriverRow key={`col3-${i}`} driver={d} isNext={isNext} />)}</div>
+          <div className="flex flex-col gap-3">{col4.map((d, i) => <DriverRow key={`col4-${i}`} driver={d} isNext={isNext} />)}</div>
         </div>
       </div>
     </div>
@@ -135,7 +143,15 @@ function DriverRow({ driver, isNext }: { driver: DriverResult, isNext: boolean }
     <div className={`p-3 rounded-lg border flex flex-col gap-2 transition-colors ${isNext ? 'bg-black/60 border-oracle-red/20' : 'bg-transparent border-white/5 border-b-white/10'}`}>
       <div className="flex justify-between items-center">
         
-        <div className="flex items-center gap-3">
+        <div
+          className={`flex items-center ${
+            driver.position === "DNF"
+              ? "gap-6"
+              : driver.position <= 9
+              ? "gap-3"
+              : "gap-5"
+          }`}
+        >
           <span className={`font-bold w-6 text-lg ${posColor}`}>
             {driver.position === "DNF" ? "DNF" : `P${driver.position}`}
           </span>
@@ -156,7 +172,7 @@ function DriverRow({ driver, isNext }: { driver: DriverResult, isNext: boolean }
       </div>
       
       {isNext && driver.explanation && (
-        <p className="text-[11px] text-gray-400 leading-tight mt-1 border-t border-white/5 pt-2">
+        <p className="text-[13px] text-gray-400 leading-tight mt-1 border-t border-white/5 pt-2">
           {driver.explanation}
         </p>
       )}

@@ -40,3 +40,9 @@ body {
 .custom-scrollbar::-webkit-scrollbar-thumb:hover {
   background: #ff4d4d;
 }
+
+@keyframes shimmer {
+  100% {
+    transform: translateX(300%);
+  }
+}
