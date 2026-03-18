@@ -20,7 +20,8 @@ export default function Home() {
       <header className="container mx-auto px-6 mb-8 relative z-10 flex items-center justify-between">
         <div>
           <h1 className="text-4xl font-bold tracking-tighter text-white flex items-center gap-3">
-            GRID <span className="text-oracle-red drop-shadow-red-glow">ORACLE</span>
+              <LineChart size={36} className="text-oracle-red drop-shadow-red-glow" />
+              <span>GRID <span className="text-oracle-red drop-shadow-red-glow">ORACLE</span></span>
           </h1>
           <p className="text-gray-400 mt-2 tracking-wide text-sm uppercase">2026 AI Strategy Predictor</p>
         </div>
@@ -55,14 +56,14 @@ export default function Home() {
               Can I be for real? This whole thing started because i was BORED. But I also wanted to see how further an AI could go with the same vision that we, spectators, have. "If I fed an AI all the data I have access to, could it predict the grid better than I can?" That was the question. And here we are. 
             </p>
             <p className="text-gray-400 leading-relaxed text-lg">
-              The objective its very simple: Every Monday morning after a race, the Oracle will drop a 22-Driver prediction on the another race,
+              The objective its very simple: The Oracle will drop a 22-Driver prediction on the previous race, based on the telemetry data for that weekend, along with the past performances too. Zero human touches, just like our future! Astonishing!! Ain't that cool?!?!?!
             </p>
           </div>
           <div className="flex-1 w-full bg-oracle-dark/50 border border-white/5 rounded-2xl p-8 relative overflow-hidden group">
             <div className="absolute top-0 right-0 w-64 h-64 bg-oracle-red/10 blur-[80px] group-hover:bg-oracle-red/20 transition-colors duration-700" />
             <LineChart size={180} strokeWidth={0.5} className="text-white/5 absolute -bottom-10 -left-10" />
             <div className="relative z-10 space-y-4 font-mono text-sm text-gray-500">
-              <p className="text-oracle-red">{">"} INITIATING SEQUENCE...</p>
+              <p className="text-oracle-red">{">"} STARTING PROCESS...</p>
               <p>{">"} LOADING HISTORICAL RESUMES</p>
               <p>{">"} ANALYZING DRIVER PERFORMANCE</p>
               <p className="text-white animate-pulse">{">"} READY TO PREDICT</p>
@@ -83,10 +84,13 @@ export default function Home() {
               OpenF1 meets <span className="text-oracle-red">Llama 3.3</span>
             </h2>
             <p className="text-gray-400 leading-relaxed text-lg">
-              We don't do magic 8-balls here. Every Monday, a custom Python script wakes up and hits the <span className="text-white font-mono">OpenF1 API</span>. It pulls everything: session times, driver gaps, DNFs, you name it.
+              Different of the average F1 fans, every monday after a race, the Python script will look up at the data at <span className="text-white font-mono">OpenF1 API</span>. It pulls everything: session times, driver gaps, DNFs and more.
             </p>
             <p className="text-gray-400 leading-relaxed text-lg">
-              But here's the trick: AI models hate bloated JSON files. So, the script distills the telemetry into a highly compressed format, slaps it next to a 2025 historical performance file, and hands it to Groq's blazing-fast <span className="text-white font-mono">Llama-3.3-70b</span> model. The AI cross-references the data, generates a data-grounded 22-driver grid prediction, and dumps it right back into this Next.js frontend. Fully automated. 
+              Unfortunately, I did it all for free, and AI hates all that JSON yap and has limited tokens, so I resumed the past seasons (2023-2025) on a .txt, wich I sent to the amazing and lovely <span className="text-white font-mono">Llama-3.3-70b</span> model.
+            </p>
+            <p className="text-gray-400 leading-relaxed text-lg">
+              With those two connected, everything its automatized and auto-filled every day after the race, dropping a different prediction for every next race!
             </p>
           </div>
           <div className="flex-1 w-full grid grid-cols-2 gap-4">
@@ -125,13 +129,13 @@ export default function Home() {
               <User size={14} className="text-oracle-red" /> The Dev
             </div>
             <h2 className="text-4xl font-bold text-white tracking-tight leading-tight">
-              Arthur <span className="text-gray-500 text-2xl font-normal block mt-1">Systems Analysis & Dev</span>
+              Arthur Figueiredo <span className="text-gray-500 text-2xl font-normal block mt-1">Systems Analysis & Dev Student</span>
             </h2>
             <p className="text-gray-400 leading-relaxed text-lg">
               I'm the guy who builds stuff like this instead of doing normal things on weekends. As the founder of <span className="text-white font-bold">Percorsi Co.</span>, I'm constantly looking for ways to mash up raw logic with great design.
             </p>
             <p className="text-gray-400 leading-relaxed text-lg">
-              <strong className="text-white">What's next for the Oracle?</strong> I'm working on a feedback loop. Soon, the AI will grade its *own* past predictions against the real race results, figure out where it messed up (like underestimating Ferrari's tire deg), and automatically adjust its prompt for the next race. 
+              <strong className="text-white">What's next for the Oracle?</strong> I'm working on a feedback loop between AI's, just like Real Steel, I wanna see them robots fighting themselves!! Basically, i want to improve the AI using another AI, wich tells where it failed, how many and by how much the AI got the predictions right.
             </p>
             
             <div className="pt-4 flex items-center gap-4">
@@ -139,7 +143,7 @@ export default function Home() {
                 <Instagram size={18} className="text-gray-400 group-hover:text-oracle-red transition-colors" />
                 @arthur.script
               </a>
-              <a href="#" className="flex items-center gap-2 px-5 py-3 bg-white/5 hover:bg-white/10 border border-white/10 rounded-xl text-white font-medium transition-all group">
+              <a href="https://github.com/guifigueireedo" className="flex items-center gap-2 px-5 py-3 bg-white/5 hover:bg-white/10 border border-white/10 rounded-xl text-white font-medium transition-all group">
                 <Github size={18} className="text-gray-400 group-hover:text-oracle-red transition-colors" />
                 GitHub
               </a>
