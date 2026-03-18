@@ -130,13 +130,13 @@ export default function Home() {
               <User size={14} className="text-oracle-red" /> The Dev
             </div>
             <h2 className="text-3xl md:text-4xl font-bold text-white tracking-tight leading-tight">
-              Arthur <span className="text-gray-500 text-xl md:text-2xl font-normal block mt-1">Systems Analysis & Dev</span>
+              Arthur Figueiredo<span className="text-gray-500 text-xl md:text-2xl font-normal block mt-1">Systems Analysis & Dev</span>
             </h2>
             <p className="text-gray-400 leading-relaxed text-base md:text-lg">
               I'm the guy who builds stuff like this instead of doing normal things on weekends. As the founder of <span className="text-white font-bold">Percorsi Co.</span>, I'm constantly looking for ways to mash up raw logic with great design.
             </p>
             <p className="text-gray-400 leading-relaxed text-base md:text-lg">
-              <strong className="text-white">What's next for the Oracle?</strong> I'm working on a feedback loop. Soon, the AI will grade its *own* past predictions against the real race results, figure out where it messed up (like underestimating Ferrari's tire deg), and automatically adjust its prompt for the next race. 
+              <strong className="text-white">What's next for the Oracle?</strong> I'm working on a feedback loop between AI's, just like Real Steel, I wanna see them robots fighting themselves!! Basically, i want to improve the AI using another AI, wich tells where it failed, how many and by how much the AI got the predictions right. 
             </p>
             
             {/* Buttons - Stacked on mobile, side-by-side on larger screens */}
