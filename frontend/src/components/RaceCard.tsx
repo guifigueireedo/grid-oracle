@@ -73,8 +73,9 @@ export default function RaceCard({ race }: { race: RaceEvent }) {
 
   return (
     <div 
+      // MOBILE FIX: Uses 85vw on mobile so it always fits nicely with margins, then jumps to fixed pixels on desktop.
       className={`transition-all duration-500 ease-in-out bg-oracle-dark border rounded-xl p-6 relative flex flex-col md:flex-row gap-6 overflow-hidden group snap-start
-        ${isOpen ? "w-[320px] md:w-[1100px]" : "w-[320px] md:w-[400px]"}
+        ${isOpen ? "w-[85vw] max-w-[380px] md:max-w-none md:w-[1100px]" : "w-[85vw] max-w-[380px] md:max-w-none md:w-[400px]"}
         ${isNext ? "border-oracle-red shadow-red-glow" : "border-white/5"}
         ${isCancelled ? "opacity-50 grayscale" : ""}
       `}
@@ -92,7 +93,7 @@ export default function RaceCard({ race }: { race: RaceEvent }) {
             {race.country_flag && <img src={race.country_flag} alt="Flag" className="w-8 rounded-sm shadow-md" />}
             <span className="text-gray-400 text-sm font-mono">{race.date}</span>
           </div>
-          {isNext && <span className="bg-oracle-red text-white text-[10px] font-bold px-2 py-1 rounded-full animate-pulse flex items-center gap-1 shadow-red-glow"><Cpu size={12} /> PREDICTION READY</span>}
+          {isNext && <span className="bg-oracle-red text-white text-[10px] font-bold px-2 py-1 rounded-full animate-pulse flex items-center gap-1 shadow-red-glow"><Cpu size={12} /> PREDICTION</span>}
           {isCancelled && <span className="bg-gray-800 text-gray-400 border border-gray-600 text-[10px] font-bold px-2 py-1 rounded-full flex items-center gap-1"><AlertTriangle size={12} /> CANCELLED</span>}
         </div>
 
@@ -103,17 +104,18 @@ export default function RaceCard({ race }: { race: RaceEvent }) {
         {(isCompleted || isNext) && (
           <button onClick={() => setIsOpen(!isOpen)} className="mt-auto w-full py-3 bg-white/5 hover:bg-white/10 border border-white/10 rounded-lg flex items-center justify-center gap-2 text-white font-medium transition-colors">
             {isOpen ? "Close View" : isNext ? "Open AI Prediction" : "Open Official Results"}
-            <ChevronRight size={18} className={`transition-transform duration-300 ${isOpen ? "rotate-180" : ""}`} />
+            <ChevronRight size={18} className={`transition-transform duration-300 ${isOpen ? "rotate-180 md:rotate-180 rotate-90" : ""}`} />
           </button>
         )}
       </div>
 
       {/* RIGHT PANE: Expanding Grid */}
       <div className={`flex-1 transition-opacity duration-500 delay-150 border-t md:border-t-0 md:border-l border-white/10 pt-6 md:pt-0 md:pl-6 ${isOpen ? "opacity-100" : "opacity-0 hidden"}`}>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 h-full">
-          <div className="flex flex-col gap-3">{col1.map((d, i) => <DriverRow key={i} driver={d} isNext={isNext} />)}</div>
-          <div className="flex flex-col gap-3">{col2.map((d, i) => <DriverRow key={i} driver={d} isNext={isNext} />)}</div>
-          <div className="flex flex-col gap-3">{col3.map((d, i) => <DriverRow key={i} driver={d} isNext={isNext} />)}</div>
+        {/* MOBILE FIX: max-h-[400px] overflow-y-auto traps the scroll inside the card on cellphones! */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 h-full max-h-[400px] md:max-h-none overflow-y-auto md:overflow-visible pr-2 md:pr-0 custom-scrollbar">
+          <div className="flex flex-col gap-3">{col1.map((d, i) => <DriverRow key={`col1-${i}`} driver={d} isNext={isNext} />)}</div>
+          <div className="flex flex-col gap-3">{col2.map((d, i) => <DriverRow key={`col2-${i}`} driver={d} isNext={isNext} />)}</div>
+          <div className="flex flex-col gap-3">{col3.map((d, i) => <DriverRow key={`col3-${i}`} driver={d} isNext={isNext} />)}</div>
         </div>
       </div>
     </div>
@@ -127,12 +129,10 @@ function DriverRow({ driver, isNext }: { driver: DriverResult, isNext: boolean }
                    driver.position === 3 ? "text-amber-600" :
                    driver.position === "DNF" ? "text-gray-600" : "text-oracle-red";
 
-  // Name splitting & forcing formatting
   const nameParts = driver.name.split(" ");
   const firstName = nameParts[0];
-  const lastName = nameParts.slice(1).join(" ").toUpperCase(); // FORCE LAST NAME ALL CAPS
+  const lastName = nameParts.slice(1).join(" ").toUpperCase(); 
   
-  // Convert full name to uppercase to guarantee a match in the dictionary
   const searchName = driver.name.toUpperCase().trim(); 
   const teamColor = driverColors[searchName] || "#FFFFFF";
 
@@ -140,7 +140,7 @@ function DriverRow({ driver, isNext }: { driver: DriverResult, isNext: boolean }
     <div className={`p-3 rounded-lg border flex flex-col gap-2 transition-colors ${isNext ? 'bg-black/60 border-oracle-red/20' : 'bg-transparent border-white/5 border-b-white/10'}`}>
       <div className="flex justify-between items-center">
         
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-3">
           <span className={`font-bold w-6 text-lg ${posColor}`}>
             {driver.position === "DNF" ? "DNF" : `P${driver.position}`}
           </span>

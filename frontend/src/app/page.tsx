@@ -19,7 +19,7 @@ export default function Home() {
       {/* Header */}
       <header className="container mx-auto px-6 mb-8 relative z-10 flex items-center justify-between">
         <div>
-          <h1 className="text-4xl font-bold tracking-tighter text-white flex items-center gap-3">
+          <h1 className="text-3xl md:text-3xl md:text-4xl font-bold tracking-tighter text-white flex items-center gap-3">
               <LineChart size={36} className="text-oracle-red drop-shadow-red-glow" />
               <span>GRID <span className="text-oracle-red drop-shadow-red-glow">ORACLE</span></span>
           </h1>
@@ -48,7 +48,7 @@ export default function Home() {
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/5 border border-white/10 text-xs text-gray-400 font-mono tracking-widest uppercase">
               <Zap size={14} className="text-oracle-red" /> The Objective
             </div>
-            <h2 className="text-4xl font-bold text-white tracking-tight leading-tight">
+            <h2 className="text-3xl md:text-4xl font-bold text-white tracking-tight leading-tight">
               Gut feelings don't win championships. <br/>
               <span className="text-oracle-red">Data does.</span>
             </h2>
@@ -80,7 +80,7 @@ export default function Home() {
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/5 border border-white/10 text-xs text-gray-400 font-mono tracking-widest uppercase">
               <Database size={14} className="text-oracle-red" /> The Architecture
             </div>
-            <h2 className="text-4xl font-bold text-white tracking-tight leading-tight">
+            <h2 className="text-3xl md:text-4xl font-bold text-white tracking-tight leading-tight">
               OpenF1 meets <span className="text-oracle-red">Llama 3.3</span>
             </h2>
             <p className="text-gray-400 leading-relaxed text-lg">
@@ -120,56 +120,49 @@ export default function Home() {
         {/* SECTION 3: THE DEVELOPER */}
         <motion.div 
           initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-100px" }} variants={fadeUp}
-          className="flex flex-col md:flex-row items-center gap-12 bg-oracle-dark/30 border border-white/5 p-8 md:p-12 rounded-3xl relative overflow-hidden"
+          className="flex flex-col-reverse md:flex-row items-center gap-10 md:gap-12 bg-oracle-dark/30 border border-white/5 p-6 md:p-12 rounded-3xl relative overflow-hidden"
         >
           <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-oracle-red to-transparent opacity-50" />
           
-          <div className="flex-1 space-y-6 z-10">
+          {/* Text Content - Centered on mobile, left-aligned on desktop */}
+          <div className="flex-1 space-y-6 z-10 flex flex-col items-center md:items-start text-center md:text-left">
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/5 border border-white/10 text-xs text-gray-400 font-mono tracking-widest uppercase">
               <User size={14} className="text-oracle-red" /> The Dev
             </div>
-            <h2 className="text-4xl font-bold text-white tracking-tight leading-tight">
-              Arthur Figueiredo <span className="text-gray-500 text-2xl font-normal block mt-1">Systems Analysis & Dev Student</span>
+            <h2 className="text-3xl md:text-4xl font-bold text-white tracking-tight leading-tight">
+              Arthur <span className="text-gray-500 text-xl md:text-2xl font-normal block mt-1">Systems Analysis & Dev</span>
             </h2>
-            <p className="text-gray-400 leading-relaxed text-lg">
+            <p className="text-gray-400 leading-relaxed text-base md:text-lg">
               I'm the guy who builds stuff like this instead of doing normal things on weekends. As the founder of <span className="text-white font-bold">Percorsi Co.</span>, I'm constantly looking for ways to mash up raw logic with great design.
             </p>
-            <p className="text-gray-400 leading-relaxed text-lg">
-              <strong className="text-white">What's next for the Oracle?</strong> I'm working on a feedback loop between AI's, just like Real Steel, I wanna see them robots fighting themselves!! Basically, i want to improve the AI using another AI, wich tells where it failed, how many and by how much the AI got the predictions right.
+            <p className="text-gray-400 leading-relaxed text-base md:text-lg">
+              <strong className="text-white">What's next for the Oracle?</strong> I'm working on a feedback loop. Soon, the AI will grade its *own* past predictions against the real race results, figure out where it messed up (like underestimating Ferrari's tire deg), and automatically adjust its prompt for the next race. 
             </p>
             
-            <div className="pt-4 flex items-center gap-4">
-              <a href="https://instagram.com/arthur.script" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 px-5 py-3 bg-white/5 hover:bg-white/10 border border-white/10 rounded-xl text-white font-medium transition-all group">
-                <Instagram size={18} className="text-gray-400 group-hover:text-oracle-red transition-colors" />
-                @arthur.script
+            {/* Buttons - Stacked on mobile, side-by-side on larger screens */}
+            <div className="pt-4 flex flex-col sm:flex-row items-center justify-center md:justify-start gap-4 w-full">
+              <a href="https://instagram.com/arthur.script" target="_blank" rel="noopener noreferrer" className="flex items-center justify-center gap-2 px-5 py-3 bg-white/5 hover:bg-white/10 border border-white/10 rounded-xl text-white font-medium transition-all group w-full sm:w-auto">
+                <span className="text-gray-400 group-hover:text-oracle-red transition-colors font-bold">@arthur.script</span>
               </a>
-              <a href="https://github.com/guifigueireedo" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 px-5 py-3 bg-white/5 hover:bg-white/10 border border-white/10 rounded-xl text-white font-medium transition-all group">
-                <Github size={18} className="text-gray-400 group-hover:text-oracle-red transition-colors" />
-                GitHub
+              <a href="https://github.com/guifigueireedo" target="_blank" rel="noopener noreferrer" className="flex items-center justify-center gap-2 px-5 py-3 bg-white/5 hover:bg-white/10 border border-white/10 rounded-xl text-white font-medium transition-all group w-full sm:w-auto">
+                <span className="text-gray-400 group-hover:text-oracle-red transition-colors font-bold">GitHub</span>
               </a>
-              <a href="https://linkedin.com/in/guifigueireedo" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 px-5 py-3 bg-white/5 hover:bg-white/10 border border-white/10 rounded-xl text-white font-medium transition-all group">
-                <Linkedin size={18} className="text-gray-400 group-hover:text-oracle-red transition-colors" />
-                LinkedIn
+              <a href="https://linkedin.com/in/guifigueireedo" target="_blank" rel="noopener noreferrer" className="flex items-center justify-center gap-2 px-5 py-3 bg-white/5 hover:bg-white/10 border border-white/10 rounded-xl text-white font-medium transition-all group w-full sm:w-auto">
+                <span className="text-gray-400 group-hover:text-oracle-red transition-colors font-bold">LinkedIn</span>
               </a>
-              <a href="https://arthur-figueireedo.netlify.app" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 px-5 py-3 bg-white/5 hover:bg-white/10 border border-white/10 rounded-xl text-white font-medium transition-all group">
-                <Globe size={18} className="text-gray-400 group-hover:text-oracle-red transition-colors" />
-                Portfolio
+              <a href="https://arthur-figueiredo.netlify.app" target="_blank" rel="noopener noreferrer" className="flex items-center justify-center gap-2 px-5 py-3 bg-white/5 hover:bg-white/10 border border-white/10 rounded-xl text-white font-medium transition-all group w-full sm:w-auto">
+                <span className="text-gray-400 group-hover:text-oracle-red transition-colors font-bold">Portfolio</span>
               </a>
             </div>
           </div>
           
-          <div className="w-full md:w-1/3 flex justify-center z-10">
-            <div className="w-48 h-48 md:w-64 md:h-64 rounded-full border-4 border-oracle-red/20 shadow-red-glow-intense flex items-center justify-center bg-oracle-dark relative overflow-hidden">
-               {/* Make sure the src matches exactly what you named your file in the public folder */}
-               <img 
-                 src="/me.jpeg"
-                 alt="Arthur - Percorsi Co." 
-                 className="w-full h-full object-cover" 
-               />
+          {/* Image Container - Added shrink-0 to prevent oval squishing and margin to separate from text */}
+          <div className="w-full md:w-1/3 flex justify-center z-10 mb-2 md:mb-0">
+            <div className="w-48 h-48 md:w-64 md:h-64 shrink-0 rounded-full border-4 border-oracle-red/20 shadow-red-glow-intense flex items-center justify-center bg-oracle-dark relative overflow-hidden">
+               <img src="/me.jpeg" alt="Arthur - Percorsi Co." className="w-full h-full object-cover" />
             </div>
           </div>
         </motion.div>
-
       </section>
     </main>
   );
