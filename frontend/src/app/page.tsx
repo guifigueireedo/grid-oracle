@@ -1,7 +1,7 @@
 "use client";
 
 import RaceCarousel from "@/components/RaceCarousel";
-import { Activity, Database, Cpu, User, ArrowRight, Github, Instagram, Zap, Code2, LineChart } from "lucide-react";
+import { Activity, Database, Cpu, User, Zap, Code2, LineChart, Instagram, Github, Linkedin, Globe } from "lucide-react";
 import { motion, Variants } from "framer-motion";
 
 export default function Home() {
@@ -143,17 +143,29 @@ export default function Home() {
                 <Instagram size={18} className="text-gray-400 group-hover:text-oracle-red transition-colors" />
                 @arthur.script
               </a>
-              <a href="https://github.com/guifigueireedo" className="flex items-center gap-2 px-5 py-3 bg-white/5 hover:bg-white/10 border border-white/10 rounded-xl text-white font-medium transition-all group">
+              <a href="https://github.com/guifigueireedo" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 px-5 py-3 bg-white/5 hover:bg-white/10 border border-white/10 rounded-xl text-white font-medium transition-all group">
                 <Github size={18} className="text-gray-400 group-hover:text-oracle-red transition-colors" />
                 GitHub
+              </a>
+              <a href="https://linkedin.com/in/guifigueireedo" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 px-5 py-3 bg-white/5 hover:bg-white/10 border border-white/10 rounded-xl text-white font-medium transition-all group">
+                <Linkedin size={18} className="text-gray-400 group-hover:text-oracle-red transition-colors" />
+                LinkedIn
+              </a>
+              <a href="https://arthur-figueireedo.netlify.app" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 px-5 py-3 bg-white/5 hover:bg-white/10 border border-white/10 rounded-xl text-white font-medium transition-all group">
+                <Globe size={18} className="text-gray-400 group-hover:text-oracle-red transition-colors" />
+                Portfolio
               </a>
             </div>
           </div>
           
           <div className="w-full md:w-1/3 flex justify-center z-10">
             <div className="w-48 h-48 md:w-64 md:h-64 rounded-full border-4 border-oracle-red/20 shadow-red-glow-intense flex items-center justify-center bg-oracle-dark relative overflow-hidden">
-               {}
-               <User size={80} className="text-oracle-red opacity-50" />
+               {/* Make sure the src matches exactly what you named your file in the public folder */}
+               <img 
+                 src="/me.jpeg"
+                 alt="Arthur - Percorsi Co." 
+                 className="w-full h-full object-cover" 
+               />
             </div>
           </div>
         </motion.div>
