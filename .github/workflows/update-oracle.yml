@@ -26,7 +26,6 @@ jobs:
       - name: Run Telemetry Script (Update AI Knowledge)
         run: |
           cd backend/scripts
-          # This ensures the new race JSON is added to current_data/ BEFORE the AI predicts
           python fetch_current_data.py
 
       - name: Run Frontend Update Script (Trigger AI)
@@ -41,9 +40,8 @@ jobs:
           git config --global user.name 'github-actions[bot]'
           git config --global user.email 'github-actions[bot]@users.noreply.github.com'
           
-          # Use paths starting from the root of the repo!
           git add frontend/src/data/calendar.json
           git add backend/data/current_data/
           
-          git commit -m "🤖 TELEMETRY UPDATE: Processed latest F1 data and AI predictions" || echo "No new data to commit"
+          git commit -m "TELEMETRY UPDATE: Processed latest F1 data and AI predictions" || echo "No new data to commit"
           git push
