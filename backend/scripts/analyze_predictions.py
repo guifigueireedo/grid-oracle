@@ -122,13 +122,13 @@ def generate_race_prediction(): #defines the main function to generate the race 
         OUTPUT FORMAT:
 
         [RESULTS]
-        P1 - Driver (Number) - Explanation.
-        P2 - Driver (Number) - Explanation.
+        P1 - Driver Name - Explanation.
+        P2 - Driver Name - Explanation.
         ...
-        P10 - Driver (Number) - Explanation (Inside the points).
-        P11 - Driver (Number) - Explanation (Outside the points).
+        P10 - Driver Name - Explanation (Inside the points).
+        P11 - Driver Name - Explanation (Outside the points).
         ...
-        DNF - Driver (Number) - Reason (e.g., Engine failure, Lap 1 collision).
+        DNF - Driver Name - Reason (e.g., Engine failure, Lap 1 collision).
         """
     )
     
