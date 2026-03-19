@@ -7,11 +7,10 @@ from datetime import datetime, timezone
 from analyze_predictions import *
 
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
-
 FRONTEND_DATA_PATH = os.path.abspath(os.path.join(SCRIPT_DIR, "../../frontend/src/data/calendar.json"))
 
 def fetch_and_build_calendar():
-    print("fetching 2026 calendar from openf1")
+    print("Fetching 2026 calendar from OpenF1...")
     base_url = "https://api.openf1.org/v1/"
     
     response_r = requests.get(f"{base_url}sessions?year=2026&session_name=Race")
@@ -57,12 +56,9 @@ def fetch_and_build_calendar():
             event["status"] = "completed"
             print(f"Fetching actual results for {meeting_name}...")
             
-            print(f"[DEBUG] Fetching sessions for meeting_key={meeting_key}")
             response_s = requests.get(f"{base_url}sessions?meeting_key={meeting_key}")
-            time.sleep(3)
-            response_s.raise_for_status()
+            time.sleep(1)
             sessions = response_s.json()
-            
             race_session = next((s for s in sessions if s.get("session_name") == "Race"), None)
             
             actual_results = []
@@ -71,41 +67,45 @@ def fetch_and_build_calendar():
                 
                 print(f"[DEBUG] Fetching drivers for session_key={session_key}")
                 response_d = requests.get(f"{base_url}drivers?session_key={session_key}")
-                time.sleep(3)
-                response_d.raise_for_status()
-                drivers_map = {d["driver_number"]: d.get("full_name", str(d["driver_number"])) for d in response_d.json()}
+                time.sleep(1)
+                
+                drivers_map = {}
+                if response_d.status_code == 200:
+                    for d in response_d.json():
+                        drivers_map[d["driver_number"]] = d.get("full_name", f"Driver {d.get('driver_number')}")
                 
                 print(f"[DEBUG] Fetching results for session_key={session_key}")
                 response_res = requests.get(f"{base_url}session_result?session_key={session_key}")
-                time.sleep(3)
-                response_res.raise_for_status()
-                results_data = response_res.json()
+                time.sleep(1)
                 
-                results_data.sort(key=lambda x: x.get('position') or 999) 
-                
-                for res in results_data:
-                    drv_num = res.get("driver_number")
-                    pos = "DNF" if res.get("position") is None else res.get("position")
+                if response_res.status_code == 200:
+                    results_data = response_res.json()
+                    results_data.sort(key=lambda x: x.get('position') or 999) 
                     
-                    gap = res.get("gap_to_leader", "")
-                    if gap is not None and gap != "":
-                        gap = f"+{gap}s" if isinstance(gap, (int, float)) else str(gap)
-                    else:
-                        gap = ""
+                    for res in results_data:
+                        drv_num = res.get("driver_number")
+                        pos = "DNF" if res.get("position") is None else res.get("position")
                         
-                    actual_results.append({
-                        "name": drivers_map.get(drv_num, f"Driver {drv_num}"),
-                        "position": pos,
-                        "gap": gap
-                    })
-                    
+                        gap = res.get("gap_to_leader", "")
+                        if gap is not None and gap != "":
+                            gap = f"+{gap}s" if isinstance(gap, (int, float)) else str(gap)
+                        else:
+                            gap = ""
+                            
+                        # Lean structure: only name, position, and gap
+                        actual_results.append({
+                            "name": drivers_map.get(drv_num, f"Driver {drv_num}"),
+                            "position": pos,
+                            "gap": gap
+                        })
+                        
             event["results"] = actual_results
 
         elif race_time >= now and not found_next_race:
             event["status"] = "next"
             found_next_race = True
 
-            print(f"Triggering ai prediction for {meeting_name}")
+            print(f"Triggering AI prediction for {meeting_name}...")
             ai_text = generate_race_prediction()
 
             predictions = []
@@ -120,13 +120,13 @@ def fetch_and_build_calendar():
                             raw_name = parts[1].strip()
                             explanation = parts[2].strip()
 
-                            # FIX: Pass actual number to frontend to stop "PP1"
                             pos = 'DNF' if pos_str == 'DNF' else int(pos_str.replace('P', ''))
                             clean_name = re.sub(r'\s*\(\d+\)\s*', '', raw_name)
 
+                            # Lean structure: only name, position, and explanation
                             predictions.append({
                                 "name": clean_name,
-                                "position": pos, # Fixed
+                                "position": pos,
                                 "explanation": explanation
                             })
             

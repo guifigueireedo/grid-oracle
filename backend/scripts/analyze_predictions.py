@@ -113,8 +113,8 @@ def generate_race_prediction(): #defines the main function to generate the race 
 
         INSTRUCTIONS:
         1. CURRENT ACTIVE GRID ONLY: Use ONLY the exact 22 drivers listed in the provided 'current_data_2026'. Don't create drivers, the sum of the grid must be exactly 22.
-        2. RECENT FORM OVER REPUTATION: You MUST heavily weight the 2026 data. If a top driver has multiple DNFs or bad performances, they will have a lower prediction. If a low/midfield driver is consistently finishing in the top 10, they will have a better prediction. Consider realistic variation on past data and on reputation.
-        3. RELATIVE SUCCESS & POINTS ZONE: Points are only awarded from P1 to P10. You must evaluate performance relative to the team's tier. P7 is a disaster for a Top 5 team, but a massive success for teams like Williams or Cadillac. Reflect this context in your analysis.
+        2. RECENT FORM OVER REPUTATION: You MUST heavily weight the 2026 data. If a top driver has multiple DNFs or bad performances, they will have a lower prediction. If a low/midfield driver is consistently finishing in the top 10, they will have a better prediction. Consider realistic variation on the data given and on reputation of the drivers/team.
+        3. RELATIVE SUCCESS & POINTS ZONE: Points are only awarded from P1 to P10. You must evaluate performance relative to the team's tier. P7 is a disaster for a Top 5 team, but a massive success for teams with the worst cars like Aston Martin or Cadillac. Reflect this context in your analysis.
         4. REALISTIC DNF: A normal F1 race has 1 to 3 DNFs. Extreme anomalies (+6 DNFs) are exceptionally rare. Don't just assign DNFs based on the numbers of DNF's of last race. 
         5. DATA-GROUNDED REASONING: Your explanations MUST have a justified and different explanation for each driver. Generic phrases like "struggled with pace" and "consistent points" are banned. The final explanation must have 200 characters min.
         6. DNF FORMATTING: Do NOT assign a finishing position (P-number) to a driver who DNFs. Place all DNFs at the bottom of the classification.

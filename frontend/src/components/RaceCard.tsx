@@ -4,30 +4,20 @@ import { ChevronRight, Trophy, AlertTriangle, Cpu, MapPin, Clock } from "lucide-
 import { useState, useEffect } from "react";
 import Image from "next/image";
 
-const driverColors: Record<string, string> = {
-  "LANDO NORRIS": "#F47600",
-  "MAX VERSTAPPEN": "#4781D7",
-  "GABRIEL BORTOLETO": "#F50537",
-  "ISACK HADJAR": "#4781D7",
-  "PIERRE GASLY": "#00A1E8",
-  "SERGIO PEREZ": "#909090",
-  "KIMI ANTONELLI": "#00D7B6",
-  "FERNANDO ALONSO": "#229971",
-  "CHARLES LECLERC": "#ED1131",
-  "LANCE STROLL": "#229971",
-  "ALEXANDER ALBON": "#1868DB",
-  "NICO HULKENBERG": "#F50537",
-  "LIAM LAWSON": "#6C98FF",
-  "ESTEBAN OCON": "#9C9FA2",
-  "ARVID LINDBLAD": "#6C98FF",
-  "FRANCO COLAPINTO": "#00A1E8",
-  "LEWIS HAMILTON": "#ED1131",
-  "CARLOS SAINZ": "#1868DB",
-  "GEORGE RUSSELL": "#00D7B6",
-  "VALTTERI BOTTAS": "#909090",
-  "OSCAR PIASTRI": "#F47600",
-  "OLIVER BEARMAN": "#9C9FA2"
-};
+import driversBase from "../data/drivers.json";
+
+interface DriverBase {
+  name: string;
+  driver_number: number;
+  team_name: string;
+  team_colour: string;
+  headshot_url: string;
+}
+
+const driverMap = driversBase.reduce((acc, driver) => {
+  acc[driver.name.toLowerCase()] = driver;
+  return acc;
+}, {} as Record<string, DriverBase>);
 
 interface DriverResult {
   name: string;
@@ -52,6 +42,8 @@ interface RaceEvent {
 export default function RaceCard({ race }: { race: RaceEvent }) {
   const [isOpen, setIsOpen] = useState(false);
   const [localTime, setLocalTime] = useState<string>("Calculating...");
+  
+  const [expandedDriver, setExpandedDriver] = useState<string | null>(null);
 
   useEffect(() => {
     if (race.date_start_utc) {
@@ -93,7 +85,7 @@ export default function RaceCard({ race }: { race: RaceEvent }) {
           ) : null;
         })()}
 
-        <div className="flex justify-between items-start mb-4">
+        <div className="flex justify-between items-start mb-4 relative z-10">
           <div className="flex items-center gap-3">
             {race.country_flag && <Image src={race.country_flag} alt="Flag" width={32} height={20} className="rounded-sm shadow-md"/>}
             <span className="text-gray-400 text-sm font-mono">{race.date}</span>
@@ -102,12 +94,12 @@ export default function RaceCard({ race }: { race: RaceEvent }) {
           {isCancelled && <span className="bg-gray-800 text-gray-400 border border-gray-600 text-[10px] font-bold px-2 py-1 rounded-full flex items-center gap-1"><AlertTriangle size={12} /> CANCELLED</span>}
         </div>
 
-        <h2 className="text-2xl font-bold text-white mb-2 uppercase tracking-tight">{race.name}</h2>
-        <div className="flex items-center gap-2 text-oracle-red text-sm mb-1 font-medium"><MapPin size={14} /> {race.location}</div>
-        {!isCancelled && <div className="flex items-center gap-2 text-gray-500 text-xs mb-6 font-mono"><Clock size={12} /> Local: <span className="text-gray-300">{localTime}</span></div>}
+        <h2 className="text-2xl font-bold text-white mb-2 uppercase tracking-tight relative z-10">{race.name}</h2>
+        <div className="flex items-center gap-2 text-oracle-red text-sm mb-1 font-medium relative z-10"><MapPin size={14} /> {race.location}</div>
+        {!isCancelled && <div className="flex items-center gap-2 text-gray-500 text-xs mb-6 font-mono relative z-10"><Clock size={12} /> Local: <span className="text-gray-300">{localTime}</span></div>}
 
         {(isCompleted || isNext) && (
-          <button onClick={() => setIsOpen(!isOpen)} className="mt-auto w-full py-3 bg-white/5 hover:bg-white/10 border border-white/10 rounded-lg flex items-center justify-center gap-2 text-white font-medium transition-colors">
+          <button onClick={() => setIsOpen(!isOpen)} className="mt-auto w-full py-3 bg-white/5 hover:bg-white/10 border border-white/10 rounded-lg flex items-center justify-center gap-2 text-white font-medium transition-colors relative z-10">
             {isOpen ? "Close View" : isNext ? "Open AI Prediction" : "Open Official Results"}
             <ChevronRight size={18} className={`transition-transform duration-300 ${isOpen ? "rotate-180 md:rotate-180 rotate-90" : ""}`} />
           </button>
@@ -116,17 +108,30 @@ export default function RaceCard({ race }: { race: RaceEvent }) {
 
       <div className={`flex-1 transition-opacity duration-500 delay-150 border-t md:border-t-0 md:border-l border-white/10 pt-6 md:pt-0 md:pl-6 ${isOpen ? "opacity-100" : "opacity-0 hidden"}`}>
         <div className="grid grid-cols-1 md:grid-cols-4 gap-6 h-full max-h-[400px] md:max-h-none overflow-y-auto md:overflow-visible pr-2 md:pr-0 custom-scrollbar">
-          <div className="flex flex-col gap-3">{col1.map((d, i) => <DriverRow key={`col1-${i}`} driver={d} isNext={isNext} />)}</div>
-          <div className="flex flex-col gap-3">{col2.map((d, i) => <DriverRow key={`col2-${i}`} driver={d} isNext={isNext} />)}</div>
-          <div className="flex flex-col gap-3">{col3.map((d, i) => <DriverRow key={`col3-${i}`} driver={d} isNext={isNext} />)}</div>
-          <div className="flex flex-col gap-3">{col4.map((d, i) => <DriverRow key={`col4-${i}`} driver={d} isNext={isNext} />)}</div>
+          <div className="flex flex-col gap-3">{col1.map((d, i) => <DriverRow key={`col1-${i}`} driver={d} isNext={isNext} expandedDriver={expandedDriver} setExpandedDriver={setExpandedDriver} />)}</div>
+          <div className="flex flex-col gap-3">{col2.map((d, i) => <DriverRow key={`col2-${i}`} driver={d} isNext={isNext} expandedDriver={expandedDriver} setExpandedDriver={setExpandedDriver} />)}</div>
+          <div className="flex flex-col gap-3">{col3.map((d, i) => <DriverRow key={`col3-${i}`} driver={d} isNext={isNext} expandedDriver={expandedDriver} setExpandedDriver={setExpandedDriver} />)}</div>
+          <div className="flex flex-col gap-3">{col4.map((d, i) => <DriverRow key={`col4-${i}`} driver={d} isNext={isNext} expandedDriver={expandedDriver} setExpandedDriver={setExpandedDriver} />)}</div>
         </div>
       </div>
     </div>
   );
 }
 
-function DriverRow({ driver, isNext }: { driver: DriverResult, isNext: boolean }) {
+function DriverRow({ 
+  driver, 
+  isNext, 
+  expandedDriver, 
+  setExpandedDriver 
+}: { 
+  driver: DriverResult, 
+  isNext: boolean,
+  expandedDriver: string | null,
+  setExpandedDriver: (name: string | null) => void
+}) {
+  
+  const isExpanded = expandedDriver === driver.name;
+
   const posColor = driver.position === 1 ? "text-yellow-400" :
                    driver.position === 2 ? "text-gray-300" :
                    driver.position === 3 ? "text-amber-600" :
@@ -134,24 +139,22 @@ function DriverRow({ driver, isNext }: { driver: DriverResult, isNext: boolean }
 
   const nameParts = driver.name.split(" ");
   const firstName = nameParts[0];
-  const lastName = nameParts.slice(1).join(" ").toUpperCase(); 
+  const lastName = nameParts.slice(1).join(" "); 
   
-  const searchName = driver.name.toUpperCase().trim(); 
-  const teamColor = driverColors[searchName] || "#FFFFFF";
+  const baseData = driverMap[driver.name.toLowerCase()] || {};
+  const teamColor = baseData.team_colour ? `#${baseData.team_colour}` : "#FFFFFF";
+  const teamName = baseData.team_name || "Unknown Team";
+  
+  const logoFileName = teamName.toLowerCase().replace(/\s+/g, "_");
+  const logoUrl = `/logos/${logoFileName}.png`;
 
   return (
-    <div className={`p-3 rounded-lg border flex flex-col gap-2 transition-colors ${isNext ? 'bg-black/60 border-oracle-red/20' : 'bg-transparent border-white/5 border-b-white/10'}`}>
+    <div 
+      onClick={() => setExpandedDriver(isExpanded ? null : driver.name)}
+      className={`p-3 rounded-lg border flex flex-col gap-2 transition-all cursor-pointer group ${isNext ? 'bg-black/60 border-oracle-red/20 hover:border-oracle-red/50' : 'bg-transparent border-white/5 border-b-white/10 hover:bg-white/5'}`}
+    >
       <div className="flex justify-between items-center">
-        
-        <div
-          className={`flex items-center ${
-            driver.position === "DNF"
-              ? "gap-6"
-              : driver.position <= 9
-              ? "gap-3"
-              : "gap-5"
-          }`}
-        >
+        <div className={`flex items-center ${driver.position === "DNF" ? "gap-6" : driver.position <= 9 ? "gap-3" : "gap-5"}`}>
           <span className={`font-bold w-6 text-lg ${posColor}`}>
             {driver.position === "DNF" ? "DNF" : `P${driver.position}`}
           </span>
@@ -171,10 +174,43 @@ function DriverRow({ driver, isNext }: { driver: DriverResult, isNext: boolean }
         )}
       </div>
       
-      {isNext && driver.explanation && (
-        <p className="text-[13px] text-gray-400 leading-tight mt-1 border-t border-white/5 pt-2">
-          {driver.explanation}
-        </p>
+      {isExpanded && (
+        <div className="mt-2 pt-3 border-t border-white/10 flex flex-col gap-3 animate-in fade-in slide-in-from-top-2 duration-300">
+            <div className="flex items-center justify-between">
+                <div className="flex items-center gap-4">
+                    <div 
+                      className="w-12 h-12 rounded-full border-2 overflow-hidden flex items-center justify-center bg-black/50 shrink-0" 
+                      style={{ borderColor: teamColor }}
+                    >
+                        {baseData.headshot_url ? (
+                            <img src={baseData.headshot_url} alt={driver.name} className="w-full h-full object-cover scale-110 mt-2" />
+                        ) : (
+                            <span className="text-gray-500 text-[10px] font-mono">N/A</span>
+                        )}
+                    </div>
+                    <div>
+                        <div className="flex items-center gap-2">
+                           <span className="font-black text-xl italic" style={{ color: teamColor }}>
+                             {baseData.driver_number || "00"}
+                           </span>
+                           <span className="text-white font-bold text-sm uppercase tracking-wide drop-shadow-md">
+                             {teamName}
+                           </span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div className="w-8 h-8 opacity-70">
+                    <img src={logoUrl} alt={teamName} className="w-full h-full object-contain filter grayscale group-hover:grayscale-0 transition-all" onError={(e) => e.currentTarget.style.display = 'none'} />
+                </div>
+            </div>
+            
+            {isNext && driver.explanation && (
+                <p className="text-[12px] text-gray-300 leading-relaxed bg-black/40 p-2.5 rounded-md border border-white/5 mt-1">
+                    {driver.explanation}
+                </p>
+            )}
+        </div>
       )}
     </div>
   );
