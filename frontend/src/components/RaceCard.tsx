@@ -144,9 +144,6 @@ function DriverRow({
   const baseData = driverMap[driver.name.toLowerCase()] || {};
   const teamColor = baseData.team_colour ? `#${baseData.team_colour}` : "#FFFFFF";
   const teamName = baseData.team_name || "Unknown Team";
-  
-  const logoFileName = teamName.toLowerCase().replace(/\s+/g, "_");
-  const logoUrl = `/logos/${logoFileName}.png`;
 
   return (
     <div 
@@ -183,7 +180,7 @@ function DriverRow({
                       style={{ borderColor: teamColor }}
                     >
                         {baseData.headshot_url ? (
-                            <img src={baseData.headshot_url} alt={driver.name} className="w-full h-full object-cover scale-110 mt-2" />
+                            <img src={baseData.headshot_url} className="w-full h-full object-cover scale-110 mt-2" />
                         ) : (
                             <span className="text-gray-500 text-[10px] font-mono">N/A</span>
                         )}
@@ -198,10 +195,6 @@ function DriverRow({
                            </span>
                         </div>
                     </div>
-                </div>
-                
-                <div className="w-8 h-8 opacity-70">
-                    <img src={logoUrl} alt={teamName} className="w-full h-full object-contain filter grayscale group-hover:grayscale-0 transition-all" onError={(e) => e.currentTarget.style.display = 'none'} />
                 </div>
             </div>
             
